@@ -1,4 +1,4 @@
-﻿$SubscriptionID = #subscription parameter
+$SubscriptionID = #subscription parameter
 $TenantName = Get-aztenant | select -ExpandProperty Name
 $mwrg = $tenantname + 'MW-RG'
 $mwloganalytics = $tenantName +'MW-LogAnalytics'
@@ -27,7 +27,18 @@ Write-Host "AZ module is already installed" -ForegroundColor Green
 CheckInstalledModule
 
 Connect-azaccount
-Set-AzContext -subscription $SubscriptionID
+
+#Specify parameters
+
+$TenantID = #tenant parameter
+$SubscriptionID = #subscription parameter
+$Location = 'West Europe'
+
+Set-AzContext -tenant $TenantID -subscription $SubscriptionID
+
+$TenantName = Get-aztenant | select -ExpandProperty Name
+$mwrg = $tenantname + 'MW-RG'
+$mwloganalytics = $tenantName +'MW-LogAnalytics'
 
 #Resource group pre-creation
 New-AzResourceGroup -Name $mwrg -Location $Location -ErrorAction Stop | Write-Host ($mwrg + ' Created Successfully') -BackgroundColor Green
@@ -41,8 +52,14 @@ New-AzResourceGroupDeployment -ResourceGroupName $mwrg `
 -TemplateParameterFile `
 -DeploymentDebugLogLevel RequestContent
 
+#LogAnalytics ARM Deployment
 New-AzResourceGroupDeployment -ResourceGroupName $mwloganalytics `
 -Name `
 -TemplateFile `
 -TemplateParameterFile `
 -DeploymentDebugLogLevel RequestContent
+
+#TO DO List
+#errorcheck
+#CLAPS FunctionApp veryfication
+#Migration to DevOPS
