@@ -25,12 +25,14 @@ Connect-azaccount
 #Specify parameters
 
 $TenantID = #tenant parameter
+$TenantName = #tenant symbol (f.e. B000XX)
 $SubscriptionID = #subscription parameter
-$Location = 'West Europe'
 
+#locks script to correct tenant and subscription
 Set-AzContext -tenant $TenantID -subscription $SubscriptionID
 
-$TenantName = Get-aztenant | select -ExpandProperty Name
+#RG preset parameters
+$Location = 'West Europe'
 $mwrg = $tenantname + 'MW-RG'
 $mwloganalytics = $tenantName +'MW-LogAnalyticsWorkspace'
 $mwautomation = $tenantName +'MW-Automation'
@@ -52,11 +54,15 @@ New-AzResourceGroupDeployment -ResourceGroupName $mwrg `
 -TemplateParameterFile `
 -DeploymentDebugLogLevel RequestContent
 
+read-host “Validate if ARM was deployed sucessfully and press enter...”
+
 New-AzResourceGroupDeployment -ResourceGroupName $mwloganalytics `
 -Name `
 -TemplateFile `
 -TemplateParameterFile `
 -DeploymentDebugLogLevel RequestContent
+
+read-host “Validate if ARM was deployed sucessfully and press enter...”
 
 New-AzResourceGroupDeployment -ResourceGroupName $mwautomation `
 -Name `
@@ -64,11 +70,15 @@ New-AzResourceGroupDeployment -ResourceGroupName $mwautomation `
 -TemplateParameterFile `
 -DeploymentDebugLogLevel RequestContent
 
+read-host “Validate if ARM was deployed sucessfully and press enter...”
+
 New-AzResourceGroupDeployment -ResourceGroupName $mwclaps `
 -Name `
 -TemplateFile `
 -TemplateParameterFile `
 -DeploymentDebugLogLevel RequestContent
+
+read-host “Validate if ARM was deployed sucessfully and press enter...”
 
 #LogAnalytics ARM Deployment
 New-AzResourceGroupDeployment -ResourceGroupName $mwDefaultResourceGroup `
@@ -76,6 +86,9 @@ New-AzResourceGroupDeployment -ResourceGroupName $mwDefaultResourceGroup `
 -TemplateFile `
 -TemplateParameterFile `
 -DeploymentDebugLogLevel RequestContent
+
+read-host “Validate if ARM was deployed sucessfully and press enter...”
+Write-Host 'Deployment completed' -BackgroundColor Green
 
 #TO DO List
 #errorcheck
