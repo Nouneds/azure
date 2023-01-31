@@ -1,9 +1,3 @@
-$SubscriptionID = #subscription parameter
-$TenantName = Get-aztenant | select -ExpandProperty Name
-$mwrg = $tenantname + 'MW-RG'
-$mwloganalytics = $tenantName +'MW-LogAnalytics'
-$Location = 'West Europe'
-
 #Checks and updates AZ module
 Function CheckInstalledModule
 {
@@ -38,11 +32,17 @@ Set-AzContext -tenant $TenantID -subscription $SubscriptionID
 
 $TenantName = Get-aztenant | select -ExpandProperty Name
 $mwrg = $tenantname + 'MW-RG'
-$mwloganalytics = $tenantName +'MW-LogAnalytics'
+$mwloganalytics = $tenantName +'MW-LogAnalyticsWorkspace'
+$mwautomation = $tenantName +'MW-Automation'
+$mwclaps = $tenantName +'MW-CLAPS'
+$mwDefaultResourceGroup = $tenantName +'MW-DefaultResourceGroup-WEU'
 
 #Resource group pre-creation
 New-AzResourceGroup -Name $mwrg -Location $Location -ErrorAction Stop | Write-Host ($mwrg + ' Created Successfully') -BackgroundColor Green
 New-AzResourceGroup -Name $mwloganalytics -Location $Location -ErrorAction Stop | Write-Host ($mwloganalytics + ' Created Successfully') -BackgroundColor Green
+New-AzResourceGroup -Name $mwautomation -Location $Location -ErrorAction Stop | Write-Host ($mwautomation + ' Created Successfully') -BackgroundColor Green
+New-AzResourceGroup -Name $mwclaps -Location $Location -ErrorAction Stop | Write-Host ($mwclaps + ' Created Successfully') -BackgroundColor Green
+New-AzResourceGroup -Name $mwDefaultResourceGroup -Location $Location -ErrorAction Stop | Write-Host ($mwDefaultResourceGroup + ' Created Successfully') -BackgroundColor Green
 
 
 #ARM Deployment
@@ -52,8 +52,26 @@ New-AzResourceGroupDeployment -ResourceGroupName $mwrg `
 -TemplateParameterFile `
 -DeploymentDebugLogLevel RequestContent
 
-#LogAnalytics ARM Deployment
 New-AzResourceGroupDeployment -ResourceGroupName $mwloganalytics `
+-Name `
+-TemplateFile `
+-TemplateParameterFile `
+-DeploymentDebugLogLevel RequestContent
+
+New-AzResourceGroupDeployment -ResourceGroupName $mwautomation `
+-Name `
+-TemplateFile `
+-TemplateParameterFile `
+-DeploymentDebugLogLevel RequestContent
+
+New-AzResourceGroupDeployment -ResourceGroupName $mwclaps `
+-Name `
+-TemplateFile `
+-TemplateParameterFile `
+-DeploymentDebugLogLevel RequestContent
+
+#LogAnalytics ARM Deployment
+New-AzResourceGroupDeployment -ResourceGroupName $mwDefaultResourceGroup `
 -Name `
 -TemplateFile `
 -TemplateParameterFile `
