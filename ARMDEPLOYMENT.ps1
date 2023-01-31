@@ -25,7 +25,7 @@ Connect-azaccount
 #Specify parameters
 
 $TenantID = #tenant parameter
-$TenantName = #tenant symbol (f.e. B000XX)
+$TenantName = 'B0001' #tenant symbol (f.e. B000XX)
 $SubscriptionID = #subscription parameter
 
 #locks script to correct tenant and subscription
@@ -37,14 +37,19 @@ $mwrg = $tenantname + 'MW-RG'
 $mwloganalytics = $tenantName +'MW-LogAnalyticsWorkspace'
 $mwautomation = $tenantName +'MW-Automation'
 $mwclaps = $tenantName +'MW-CLAPS'
-$mwDefaultResourceGroup = $tenantName +'MW-DefaultResourceGroup-WEU'
+$mwDefaultResourceGroup = $tenantName +'-MW-DefaultResourceGroup-WEU'
 
 #Resource group pre-creation
-New-AzResourceGroup -Name $mwrg -Location $Location -ErrorAction Stop | Write-Host ($mwrg + ' Created Successfully') -BackgroundColor Green
-New-AzResourceGroup -Name $mwloganalytics -Location $Location -ErrorAction Stop | Write-Host ($mwloganalytics + ' Created Successfully') -BackgroundColor Green
-New-AzResourceGroup -Name $mwautomation -Location $Location -ErrorAction Stop | Write-Host ($mwautomation + ' Created Successfully') -BackgroundColor Green
-New-AzResourceGroup -Name $mwclaps -Location $Location -ErrorAction Stop | Write-Host ($mwclaps + ' Created Successfully') -BackgroundColor Green
-New-AzResourceGroup -Name $mwDefaultResourceGroup -Location $Location -ErrorAction Stop | Write-Host ($mwDefaultResourceGroup + ' Created Successfully') -BackgroundColor Green
+New-AzResourceGroup -Name $mwrg -Location $Location -ErrorAction Stop
+Write-Host ($mwrg + ' Created Successfully') -ForegroundColor Green
+New-AzResourceGroup -Name $mwloganalytics -Location $Location -ErrorAction Stop
+Write-Host ($mwloganalytics + ' Created Successfully') -ForegroundColor Green
+New-AzResourceGroup -Name $mwautomation -Location $Location -ErrorAction Stop
+Write-Host ($mwautomation + ' Created Successfully') -ForegroundColor Green
+New-AzResourceGroup -Name $mwclaps -Location $Location -ErrorAction Stop
+Write-Host ($mwclaps + ' Created Successfully') -ForegroundColor Green
+New-AzResourceGroup -Name $mwDefaultResourceGroup -Location $Location -ErrorAction Stop
+Write-Host ($mwDefaultResourceGroup + ' Created Successfully') -ForegroundColor Green
 
 
 #ARM Deployment
